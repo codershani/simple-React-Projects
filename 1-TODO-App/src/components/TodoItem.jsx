@@ -1,7 +1,6 @@
-function TodoItem1() {
-  let todoName = "Buy Milk";
-  let todoDate = "01/02/24";
+/* eslint-disable react/prop-types */
 
+function TodoItem({ todoName, todoDate }) {
   return (
     <div className="container">
       <div className="row ez-row">
@@ -17,4 +16,4 @@ function TodoItem1() {
   );
 }
 
-export default TodoItem1;
+export default TodoItem;
