@@ -1,57 +1,48 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useRef } from "react";
 import { MdOutlineAddBox } from "react-icons/md";
 import styles from "./AddTodo.module.css";
+
 function AddTodo({ onNewItem }) {
-  const [todoName, setTodoName] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [todoId, setTodoId] = useState(1);
+  const todoIdElement = useRef(1);
+  const todoNameElement = useRef();
+  const dueDateElement = useRef();
 
-  const handleNameChange = (event) => {
-    setTodoName(event.target.value);
-  };
-
-  const handleDateChange = (event) => {
-    setDueDate(event.target.value);
-  };
-
-  const handleAddButtonClicked = () => {
-    setTodoId(todoId + 1);
+  const handleAddButtonClicked = (event) => {
+    event.preventDefault();
+    todoIdElement.current += 1;
+    const todoId = todoIdElement.current;
+    const todoName = todoNameElement.current.value;
+    const dueDate = dueDateElement.current.value;
+    todoNameElement.current.value = "";
+    dueDateElement.current.value = "";
     onNewItem(todoId, todoName, dueDate);
-    setDueDate("");
-    setTodoName("");
   };
 
   return (
     <div className="container text-cetner">
-      <div className="row ez-row">
+      <form className="row ez-row" onSubmit={handleAddButtonClicked}>
         <div className="col-6">
           <input
             type="text"
+            ref={todoNameElement}
             className={styles.inputField}
             placeholder="Enter TODO here"
-            value={todoName}
-            onChange={handleNameChange}
           />
         </div>
         <div className="col-4">
           <input
             type="date"
+            ref={dueDateElement}
             className={styles.inputField}
-            value={dueDate}
-            onChange={handleDateChange}
           />
         </div>
         <div className="col-2">
-          <button
-            type="button"
-            className="btn btn-success ez-button"
-            onClick={handleAddButtonClicked}
-          >
+          <button type="submit" className="btn btn-success ez-button">
             <MdOutlineAddBox />
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
